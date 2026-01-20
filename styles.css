@@ -30,6 +30,17 @@ body {
   cursor: none;
 }
 
+html,
+body,
+a,
+button,
+input,
+textarea,
+select,
+label {
+  cursor: none;
+}
+
 body::before {
   content: "";
   position: fixed;
@@ -133,6 +144,25 @@ main {
 body.cursor-hover .cursor-ring {
   opacity: 1;
   transform: translate(-50%, -50%) scale(1.1);
+}
+
+body.cursor-button .cursor-ring {
+  opacity: 1;
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  transform: translate(-50%, -50%);
+}
+
+body.cursor-text .cursor-ring {
+  opacity: 1;
+  width: 20px;
+  height: 20px;
+  border-radius: 0;
+  border: none;
+  background: rgba(47, 107, 255, 0.6);
+  clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+  transform: translate(-50%, -50%);
 }
 
 .ambient {
@@ -950,6 +980,10 @@ body.dark .user-dropdown button:hover {
 
 body.dark .cursor-ring {
   border-color: rgba(95, 141, 255, 0.7);
+}
+
+body.dark.cursor-text .cursor-ring {
+  background: rgba(95, 141, 255, 0.6);
 }
 
 body.dark .progress-bar {

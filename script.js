@@ -28,17 +28,31 @@ const setCursorPosition = (event) => {
 window.addEventListener("mousemove", setCursorPosition);
 window.addEventListener("touchmove", setCursorPosition, { passive: true });
 
-const clickableSelector = "button, a, input, textarea, select, [role='button']";
-document.addEventListener("pointerover", (event) => {
-  if (event.target.closest(clickableSelector)) {
-    body.classList.add("cursor-hover");
-  }
-});
-document.addEventListener("pointerout", (event) => {
-  if (event.target.closest(clickableSelector)) {
+const clickableSelector = "button, a, [role='button']";
+const textInputSelector = "input, textarea, select";
+
+const setCursorState = (event) => {
+  const target = event.target;
+  if (target.closest(textInputSelector)) {
+    body.classList.add("cursor-text");
+    body.classList.remove("cursor-button");
     body.classList.remove("cursor-hover");
+    return;
   }
-});
+  if (target.closest(clickableSelector)) {
+    body.classList.add("cursor-button");
+    body.classList.remove("cursor-text");
+    body.classList.remove("cursor-hover");
+    return;
+  }
+  body.classList.remove("cursor-text");
+  body.classList.remove("cursor-button");
+  body.classList.remove("cursor-hover");
+};
+
+document.addEventListener("pointerover", setCursorState);
+document.addEventListener("pointermove", setCursorState);
+document.addEventListener("pointerout", setCursorState);
 
 const observer = new IntersectionObserver(
   (entries) => {
@@ -483,12 +497,20 @@ const initUpload = async (session) => {
     submitButton.disabled = false;
   }
 
+  const resetProgress = () => {
+    if (progressBar) {
+      progressBar.style.width = "0%";
+    }
+    if (progressText) {
+      progressText.textContent = "Click publish to upload your video.";
+    }
+  };
+
+  resetProgress();
+
   form.addEventListener("submit", async (event) => {
     event.preventDefault();
     clearMessage(message);
-    if (progressWrap) {
-      progressWrap.classList.remove("hidden");
-    }
     if (progressBar) {
       progressBar.style.width = "0%";
     }
@@ -502,16 +524,12 @@ const initUpload = async (session) => {
     const file = fileInput?.files?.[0];
 
     if (!title) {
-      if (progressWrap) {
-        progressWrap.classList.add("hidden");
-      }
+      resetProgress();
       showMessage(message, "Please add a clip title.", true);
       return;
     }
     if (!file) {
-      if (progressWrap) {
-        progressWrap.classList.add("hidden");
-      }
+      resetProgress();
       showMessage(message, "Please select a video file.", true);
       return;
     }
@@ -521,9 +539,7 @@ const initUpload = async (session) => {
     const allowedExtensions = [".mp4", ".mov"];
     const hasValidExt = allowedExtensions.some((ext) => fileName.endsWith(ext));
     if (!allowedTypes.includes(file.type) || !hasValidExt) {
-      if (progressWrap) {
-        progressWrap.classList.add("hidden");
-      }
+      resetProgress();
       showMessage(message, "Video must be .mp4 or .mov.", true);
       return;
     }
@@ -549,10 +565,12 @@ const initUpload = async (session) => {
       if (progressTimer) {
         clearInterval(progressTimer);
       }
-      if (progressWrap) {
-        progressWrap.classList.add("hidden");
-      }
-      showMessage(message, `Upload failed: ${uploadError.message}`, true);
+      const isBucketMissing = uploadError.message.toLowerCase().includes("bucket not found");
+      const errorText = isBucketMissing
+        ? "Upload failed: Bucket not found. Create a Supabase storage bucket named 'clips'."
+        : `Upload failed: ${uploadError.message}`;
+      resetProgress();
+      showMessage(message, errorText, true);
       if (submitButton) {
         submitButton.disabled = false;
       }
@@ -584,9 +602,7 @@ const initUpload = async (session) => {
     });
 
     if (insertError) {
-      if (progressWrap) {
-        progressWrap.classList.add("hidden");
-      }
+      resetProgress();
       showMessage(message, `Failed to save clip: ${insertError.message}`, true);
       if (submitButton) {
         submitButton.disabled = false;
@@ -754,17 +770,25 @@ if (supabaseClient) {
 }
 
 if (avatarButton) {
-  avatarButton.addEventListener("click", () => {
+  avatarButton.addEventListener("click", (event) => {
+    event.stopPropagation();
     const isOpen = !userDropdown?.classList.contains("hidden");
     toggleDropdown(!isOpen);
   });
 }
 
 if (signOutButton && supabaseClient) {
-  signOutButton.addEventListener("click", async () => {
+  signOutButton.addEventListener("click", async (event) => {
+    event.stopPropagation();
     await supabaseClient.auth.signOut();
     toggleDropdown(false);
     window.location.href = "index.html";
+  });
+}
+
+if (userDropdown) {
+  userDropdown.addEventListener("click", (event) => {
+    event.stopPropagation();
   });
 }
 
