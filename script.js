@@ -559,6 +559,9 @@ const initUpload = async (session) => {
   const progressBar = progressWrap ? progressWrap.querySelector(".progress-bar span") : null;
   const progressText = progressWrap ? progressWrap.querySelector(".progress-text") : null;
   const submitButton = form.querySelector('button[type="submit"]');
+  const fileInput = document.getElementById("upload-file");
+  const dropZone = document.querySelector("[data-dropzone]");
+  const dropZoneButton = dropZone ? dropZone.querySelector("[data-dropzone-button]") : null;
   if (!session) {
     showMessage(message, "You must sign in to upload a clip.", true);
     if (submitButton) {
@@ -580,6 +583,31 @@ const initUpload = async (session) => {
   };
 
   resetProgress();
+
+  if (dropZone && fileInput) {
+    const setDropActive = (active) => {
+      dropZone.classList.toggle("is-active", active);
+    };
+
+    dropZone.addEventListener("dragover", (event) => {
+      event.preventDefault();
+      setDropActive(true);
+    });
+    dropZone.addEventListener("dragleave", () => setDropActive(false));
+    dropZone.addEventListener("drop", (event) => {
+      event.preventDefault();
+      setDropActive(false);
+      const file = event.dataTransfer?.files?.[0];
+      if (file) {
+        fileInput.files = event.dataTransfer.files;
+        showMessage(message, `Selected file: ${file.name}`);
+      }
+    });
+  }
+
+  if (dropZoneButton && fileInput) {
+    dropZoneButton.addEventListener("click", () => fileInput.click());
+  }
 
   form.addEventListener("submit", async (event) => {
     event.preventDefault();

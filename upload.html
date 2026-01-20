@@ -48,39 +48,50 @@
     </header>
 
     <main>
-      <section class="page">
+      <section class="page upload-page">
         <div class="container">
           <div class="page-header reveal">
             <h1>Upload a clip</h1>
             <p>Drop in your file, describe the scene, and publish when ready.</p>
           </div>
-          <div class="page-card reveal">
-            <form id="upload-form">
-              <div class="form-field">
-                <label for="upload-title">Clip title</label>
-                <input id="upload-title" type="text" placeholder="Neon Alley Chase" />
+          <div class="upload-layout">
+            <div class="page-card reveal">
+              <form id="upload-form">
+                <div class="form-field">
+                  <label for="upload-title">Clip title</label>
+                  <input id="upload-title" type="text" placeholder="Neon Alley Chase" />
+                </div>
+                <div class="form-field">
+                  <label for="upload-file">Video file (mp4 or mov)</label>
+                  <input id="upload-file" type="file" accept=".mp4,.mov,video/mp4,video/quicktime" />
+                </div>
+                <div class="form-field">
+                  <label for="upload-tags">Tags</label>
+                  <input id="upload-tags" type="text" placeholder="Action, Night, Sci-Fi" />
+                </div>
+                <div class="form-field">
+                  <label for="upload-notes">Notes</label>
+                  <textarea id="upload-notes" placeholder="Add context or timestamps."></textarea>
+                </div>
+                <div class="upload-progress" id="upload-progress">
+                  <div class="progress-bar"><span></span></div>
+                  <p class="progress-text">Click publish to upload your video.</p>
+                </div>
+                <p class="form-message hidden" id="upload-message"></p>
+                <div class="form-actions">
+                  <button class="primary-button" type="submit">Publish</button>
+                </div>
+              </form>
+            </div>
+            <div class="drop-zone reveal" data-dropzone>
+              <div>
+                <h3>Drag & drop here</h3>
+                <p>Drop an mp4 or mov to attach it to your upload.</p>
+                <button class="secondary-button" type="button" data-dropzone-button>
+                  Choose file
+                </button>
               </div>
-              <div class="form-field">
-                <label for="upload-file">Video file (mp4 or mov)</label>
-                <input id="upload-file" type="file" accept=".mp4,.mov,video/mp4,video/quicktime" />
-              </div>
-              <div class="form-field">
-                <label for="upload-tags">Tags</label>
-                <input id="upload-tags" type="text" placeholder="Action, Night, Sci-Fi" />
-              </div>
-              <div class="form-field">
-                <label for="upload-notes">Notes</label>
-                <textarea id="upload-notes" placeholder="Add context or timestamps."></textarea>
-              </div>
-              <div class="upload-progress" id="upload-progress">
-                <div class="progress-bar"><span></span></div>
-                <p class="progress-text">Click publish to upload your video.</p>
-              </div>
-              <p class="form-message hidden" id="upload-message"></p>
-              <div class="form-actions">
-                <button class="primary-button" type="submit">Publish</button>
-              </div>
-            </form>
+            </div>
           </div>
         </div>
       </section>
