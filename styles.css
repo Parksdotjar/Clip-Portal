@@ -113,8 +113,8 @@ main {
 }
 
 .loader-logo {
-  width: 96px;
-  height: 96px;
+  width: 288px;
+  height: 288px;
   object-fit: contain;
   margin: 0 auto;
   filter: drop-shadow(0 10px 24px rgba(47, 107, 255, 0.35));
@@ -298,8 +298,8 @@ body.dark .site-header {
 }
 
 .brand-logo {
-  width: 44px;
-  height: 44px;
+  width: 132px;
+  height: 132px;
   object-fit: contain;
 }
 
