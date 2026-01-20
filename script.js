@@ -230,7 +230,7 @@ const setupPlayer = async () => {
       .then(() => {
         const playButton = player.querySelector('[data-action="play"]');
         if (playButton) {
-          playButton.textContent = "Pause";
+          playButton.textContent = "⏸";
         }
       })
       .catch(() => {});
@@ -240,7 +240,7 @@ const setupPlayer = async () => {
     playerAudio.pause();
     const playButton = player.querySelector('[data-action="play"]');
     if (playButton) {
-      playButton.textContent = "Play";
+      playButton.textContent = "▶";
     }
   };
 
@@ -306,6 +306,25 @@ const setupPlayer = async () => {
     toggleButton.textContent = "v";
   }
 
+  const savedState = localStorage.getItem("clip-portal-player-state");
+  if (savedState) {
+    try {
+      const parsed = JSON.parse(savedState);
+      if (Number.isInteger(parsed.index) && tracks[parsed.index]) {
+        currentIndex = parsed.index;
+        setTrack(currentIndex);
+      }
+      if (typeof parsed.time === "number" && parsed.time > 0) {
+        playerAudio.currentTime = parsed.time;
+      }
+      if (parsed.playing) {
+        playTrack();
+      }
+    } catch (error) {
+      localStorage.removeItem("clip-portal-player-state");
+    }
+  }
+
   const savedPosition = localStorage.getItem("clip-portal-player-pos");
   if (savedPosition) {
     try {
@@ -361,10 +380,35 @@ const setupPlayer = async () => {
     });
   }
 
+  const persistState = () => {
+    localStorage.setItem(
+      "clip-portal-player-state",
+      JSON.stringify({
+        index: currentIndex,
+        time: playerAudio.currentTime,
+        playing: !playerAudio.paused,
+      })
+    );
+  };
+
+  playerAudio.addEventListener("timeupdate", () => {
+    if (playerAudio.currentTime % 5 < 0.25) {
+      persistState();
+    }
+  });
+  playerAudio.addEventListener("play", persistState);
+  playerAudio.addEventListener("pause", persistState);
+  playerAudio.addEventListener("ended", persistState);
+
   return playerAudio;
 };
 
 const playlistReady = setupPlayer();
+if (player) {
+  setTimeout(() => {
+    player.classList.add("is-visible");
+  }, 600);
+}
 setLoaderLabel();
 setTimeout(() => startExperience(playlistReady), 2000);
 
@@ -750,12 +794,11 @@ const initDashboard = async (session) => {
 
   data.forEach((clip) => {
     const card = createClipCard(clip);
-    const controls = document.createElement("div");
-    controls.className = "clip-info";
+    const actions = card.querySelector(".clip-actions");
     const removeButton = document.createElement("button");
-    removeButton.className = "secondary-button";
+    removeButton.className = "delete-link";
     removeButton.type = "button";
-    removeButton.textContent = "Delete clip";
+    removeButton.textContent = "Delete";
     removeButton.addEventListener("click", async () => {
       clearMessage(message);
       removeButton.disabled = true;
@@ -778,8 +821,9 @@ const initDashboard = async (session) => {
         emptyState.classList.remove("hidden");
       }
     });
-    controls.appendChild(removeButton);
-    card.appendChild(controls);
+    if (actions) {
+      actions.appendChild(removeButton);
+    }
     list.appendChild(card);
   });
 };

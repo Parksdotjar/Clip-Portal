@@ -497,8 +497,15 @@ h1 {
   border-radius: 18px;
   box-shadow: var(--shadow);
   z-index: 20;
-  backdrop-filter: blur(12px);
   color: var(--ink);
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.playlist-player.is-visible {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .player-header {
@@ -518,6 +525,14 @@ h1 {
   font-weight: 600;
   cursor: pointer;
   font-family: "Outfit", sans-serif;
+}
+
+.player-toggle {
+  width: 28px;
+  height: 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .player-grip {
@@ -601,6 +616,7 @@ h1 {
   cursor: pointer;
   font-weight: 600;
   font-family: "Outfit", sans-serif;
+  font-size: 1rem;
 }
 
 .player-volume {
@@ -732,6 +748,7 @@ h1 {
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 10px;
   opacity: 0;
   transform: translateY(6px);
   transition: opacity 0.2s ease, transform 0.2s ease;
@@ -748,10 +765,26 @@ h1 {
   background: rgba(47, 107, 255, 0.85);
 }
 
+.delete-link {
+  border: 1px solid rgba(255, 122, 122, 0.6);
+  border-radius: 999px;
+  padding: 10px 18px;
+  text-decoration: none;
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.9rem;
+  background: rgba(255, 122, 122, 0.85);
+}
+
 body.dark .download-link {
   border-color: rgba(95, 141, 255, 0.6);
   color: #fff;
   background: rgba(95, 141, 255, 0.85);
+}
+
+body.dark .delete-link {
+  border-color: rgba(255, 122, 122, 0.6);
+  background: rgba(255, 122, 122, 0.85);
 }
 
 .clip-card:hover .clip-media {
