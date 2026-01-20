@@ -112,6 +112,14 @@ main {
   transition: opacity 0.8s ease;
 }
 
+.loader-logo {
+  width: 68px;
+  height: 68px;
+  object-fit: contain;
+  margin: 0 auto;
+  filter: drop-shadow(0 10px 24px rgba(47, 107, 255, 0.35));
+}
+
 .loader.fade-out {
   opacity: 0;
   pointer-events: none;
@@ -280,9 +288,19 @@ body.dark .site-header {
 
 .brand {
   font-family: "Space Grotesk", sans-serif;
-  font-weight: 700;
+  font-weight: 800;
   letter-spacing: 0.5px;
   text-transform: lowercase;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1.2rem;
+}
+
+.brand-logo {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
 }
 
 .nav {
