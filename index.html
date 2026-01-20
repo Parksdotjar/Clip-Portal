@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>clip-portal</title>
+    <meta
+      name="description"
+      content="Upload and discover cinematic clips. A clean, modern home for movie, anime, and video moments."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body class="is-loading dark">
+    <div class="loader" aria-live="polite">
+      <div class="loader-dot"></div>
+      <p>Loading clip-portal</p>
+    </div>
+    <div class="cursor-dot" aria-hidden="true"></div>
+    <div class="ambient">
+      <span class="orb orb-a"></span>
+      <span class="orb orb-b"></span>
+      <span class="orb orb-c"></span>
+    </div>
+
+    <header class="site-header">
+      <div class="container header-inner">
+        <div class="brand">clip-portal</div>
+        <nav class="nav">
+          <a href="#library">Library</a>
+        </nav>
+        <div class="header-actions">
+          <a class="ghost-button link-button" href="info.html">Info</a>
+          <a class="ghost-button link-button" href="upload.html">Upload</a>
+          <a class="ghost-button link-button" href="signin.html">Sign in</a>
+          <a class="ghost-button link-button" href="signup.html">Sign up</a>
+          <button
+            class="theme-toggle"
+            type="button"
+            aria-label="Toggle dark mode"
+            aria-pressed="false"
+          >
+            <span class="toggle-dot"></span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section id="library" class="library">
+        <div class="container">
+          <div class="library-header reveal">
+            <h1>Search clips</h1>
+            <p>Find the moment fast. Movies, anime, and cinematic edits in one place.</p>
+          </div>
+          <div class="search-bar reveal">
+            <input type="search" placeholder="Search by title, mood, or tag" />
+            <button class="primary-button" type="button">Search</button>
+          </div>
+          <div class="clip-grid">
+            <article class="clip-card reveal" style="--delay: 0s">
+              <div class="clip-cover cover-a"></div>
+              <div class="clip-info">
+                <h3>Neon Alley Chase</h3>
+                <p>Action • 00:42</p>
+              </div>
+            </article>
+            <article class="clip-card reveal" style="--delay: 0.05s">
+              <div class="clip-cover cover-b"></div>
+              <div class="clip-info">
+                <h3>Silent Horizon</h3>
+                <p>Drama • 01:08</p>
+              </div>
+            </article>
+            <article class="clip-card reveal" style="--delay: 0.1s">
+              <div class="clip-cover cover-c"></div>
+              <div class="clip-info">
+                <h3>Arcade Skyfall</h3>
+                <p>Sci-Fi • 00:37</p>
+              </div>
+            </article>
+            <article class="clip-card reveal" style="--delay: 0.15s">
+              <div class="clip-cover cover-d"></div>
+              <div class="clip-info">
+                <h3>Monochrome Bloom</h3>
+                <p>Anime • 00:55</p>
+              </div>
+            </article>
+            <article class="clip-card reveal" style="--delay: 0.2s">
+              <div class="clip-cover cover-c"></div>
+              <div class="clip-info">
+                <h3>Lowlight Drift</h3>
+                <p>Noir • 00:29</p>
+              </div>
+            </article>
+            <article class="clip-card reveal" style="--delay: 0.25s">
+              <div class="clip-cover cover-b"></div>
+              <div class="clip-info">
+                <h3>Skyline Pulse</h3>
+                <p>Anime • 00:47</p>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-inner">
+        <div>
+          <div class="brand">clip-portal</div>
+          <p>Made for clips that deserve to be remembered.</p>
+        </div>
+        <div class="footer-links">
+          <a href="#library">Library</a>
+          <a href="info.html">Info</a>
+          <a href="upload.html">Upload</a>
+          <a href="signin.html">Sign in</a>
+        </div>
+      </div>
+    </footer>
+
+    <div class="playlist-player" aria-live="polite">
+      <div class="player-header">
+        <button class="player-toggle" type="button" aria-expanded="false" aria-label="Toggle player">
+          v
+        </button>
+        <div class="track-name">
+          <span class="track-text">Loading playlist...</span>
+        </div>
+        <button class="player-grip" type="button" aria-label="Drag player">::</button>
+      </div>
+      <div class="player-body">
+        <div class="player-controls">
+          <button class="player-btn" type="button" data-action="prev">Prev</button>
+          <button class="player-btn" type="button" data-action="play">Play</button>
+          <button class="player-btn" type="button" data-action="next">Next</button>
+        </div>
+        <div class="player-volume">
+          <label for="volume-main">Volume</label>
+          <input
+            id="volume-main"
+            class="volume-slider"
+            type="range"
+            min="0"
+            max="1"
+            step="0.01"
+            value="0.5"
+          />
+        </div>
+      </div>
+      <audio id="playlist-audio" preload="auto"></audio>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
