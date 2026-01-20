@@ -436,7 +436,7 @@ const createClipCard = (clip) => {
       <p>${tagLine}</p>
     </div>
     <div class="clip-actions">
-      <a class="download-link" href="${clip.file_url}" download>Download</a>
+      <a class="download-link" href="${clip.file_url}" data-filename="${clip.title}">Download</a>
     </div>
   `;
   observer.observe(card);
@@ -831,3 +831,36 @@ document.addEventListener("click", (event) => {
 initHome();
 initSignIn();
 initSignUp();
+
+document.addEventListener("click", async (event) => {
+  const link = event.target.closest(".download-link");
+  if (!link) {
+    return;
+  }
+  event.preventDefault();
+  const url = link.getAttribute("href");
+  if (!url) {
+    return;
+  }
+  const fileName = link.dataset.filename ? `${link.dataset.filename}.mp4` : "clip.mp4";
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error("Download failed");
+    }
+    const blob = await response.blob();
+    const objectUrl = URL.createObjectURL(blob);
+    const temp = document.createElement("a");
+    temp.href = objectUrl;
+    temp.download = fileName;
+    document.body.appendChild(temp);
+    temp.click();
+    temp.remove();
+    URL.revokeObjectURL(objectUrl);
+  } catch (error) {
+    link.textContent = "Download failed";
+    setTimeout(() => {
+      link.textContent = "Download";
+    }, 2000);
+  }
+});
