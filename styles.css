@@ -156,11 +156,11 @@ body.cursor-button .cursor-ring {
 
 body.cursor-text .cursor-ring {
   opacity: 1;
-  width: 20px;
-  height: 20px;
+  width: 22px;
+  height: 22px;
   border-radius: 0;
-  border: none;
-  background: rgba(47, 107, 255, 0.6);
+  border: 2px solid rgba(47, 107, 255, 0.8);
+  background: transparent;
   clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
   transform: translate(-50%, -50%);
 }
@@ -725,6 +725,27 @@ h1 {
   display: block;
 }
 
+.clip-actions {
+  padding: 0 16px 16px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.download-link {
+  border: 1px solid rgba(11, 11, 12, 0.2);
+  border-radius: 999px;
+  padding: 8px 14px;
+  text-decoration: none;
+  color: var(--ink);
+  font-weight: 600;
+  font-size: 0.85rem;
+}
+
+body.dark .download-link {
+  border-color: rgba(255, 255, 255, 0.2);
+  color: var(--ink);
+}
+
 .split {
   background: rgba(255, 255, 255, 0.7);
 }
@@ -983,7 +1004,7 @@ body.dark .cursor-ring {
 }
 
 body.dark.cursor-text .cursor-ring {
-  background: rgba(95, 141, 255, 0.6);
+  border-color: rgba(95, 141, 255, 0.8);
 }
 
 body.dark .progress-bar {

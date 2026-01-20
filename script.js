@@ -369,6 +369,7 @@ setLoaderLabel();
 setTimeout(() => startExperience(playlistReady), 2000);
 
 const authLinks = document.querySelectorAll(".auth-link");
+let cachedClips = [];
 const userMenu = document.querySelector(".user-menu");
 const avatarButton = userMenu ? userMenu.querySelector(".avatar-button") : null;
 const userDropdown = userMenu ? userMenu.querySelector(".user-dropdown") : null;
@@ -434,6 +435,9 @@ const createClipCard = (clip) => {
       <h3>${clip.title}</h3>
       <p>${tagLine}</p>
     </div>
+    <div class="clip-actions">
+      <a class="download-link" href="${clip.file_url}" download>Download</a>
+    </div>
   `;
   observer.observe(card);
   return card;
@@ -445,6 +449,7 @@ const initHome = async () => {
   }
   const list = document.querySelector("[data-clips-list]");
   const emptyState = document.querySelector("[data-clips-empty]");
+  const searchInput = document.querySelector(".search-bar input");
   if (!list) {
     return;
   }
@@ -459,18 +464,40 @@ const initHome = async () => {
     }
     return;
   }
-  if (!data || data.length === 0) {
-    if (emptyState) {
-      emptyState.classList.remove("hidden");
+  cachedClips = data || [];
+  const renderClips = (clips) => {
+    list.innerHTML = "";
+    if (!clips || clips.length === 0) {
+      if (emptyState) {
+        emptyState.classList.remove("hidden");
+      }
+      return;
     }
-    return;
+    if (emptyState) {
+      emptyState.classList.add("hidden");
+    }
+    clips.forEach((clip) => {
+      list.appendChild(createClipCard(clip));
+    });
+  };
+
+  renderClips(cachedClips);
+
+  if (searchInput) {
+    searchInput.addEventListener("input", () => {
+      const query = searchInput.value.trim().toLowerCase();
+      if (!query) {
+        renderClips(cachedClips);
+        return;
+      }
+      const filtered = cachedClips.filter((clip) => {
+        const title = clip.title?.toLowerCase() || "";
+        const tags = Array.isArray(clip.tags) ? clip.tags.join(" ").toLowerCase() : "";
+        return title.includes(query) || tags.includes(query);
+      });
+      renderClips(filtered);
+    });
   }
-  if (emptyState) {
-    emptyState.classList.add("hidden");
-  }
-  data.forEach((clip) => {
-    list.appendChild(createClipCard(clip));
-  });
 };
 
 const initUpload = async (session) => {
