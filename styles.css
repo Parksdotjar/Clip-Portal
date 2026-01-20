@@ -112,13 +112,6 @@ main {
   transition: opacity 0.8s ease;
 }
 
-.loader-logo {
-  width: 288px;
-  height: 288px;
-  object-fit: contain;
-  margin: 0 auto;
-  filter: drop-shadow(0 10px 24px rgba(47, 107, 255, 0.35));
-}
 
 .loader.fade-out {
   opacity: 0;
@@ -294,14 +287,9 @@ body.dark .site-header {
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  font-size: 1.2rem;
+  font-size: 1.8rem;
 }
 
-.brand-logo {
-  width: 132px;
-  height: 132px;
-  object-fit: contain;
-}
 
 .nav {
   display: flex;
