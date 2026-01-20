@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Storyboard dashboard</title>
+    <meta name="description" content="Your personal storyboard workspace." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body class="is-loading" data-page="storyboard-dashboard">
+    <div class="loader" aria-live="polite">
+      <div class="loader-dot"></div>
+      <p>Loading boards...</p>
+    </div>
+
+    <header class="site-header">
+      <div class="container header-inner">
+        <div class="brand">Storyboard</div>
+        <nav class="nav">
+          <a href="info.html">Info</a>
+          <a href="../index.html">Clip Portal</a>
+        </nav>
+        <div class="header-actions">
+          <a class="ghost-button link-button auth-link" href="../signin.html">Sign in</a>
+          <a class="ghost-button link-button auth-link" href="../signup.html">Sign up</a>
+          <div class="user-menu hidden">
+            <button class="avatar-button" type="button" aria-haspopup="true" aria-expanded="false">
+              U
+            </button>
+            <div class="user-dropdown hidden">
+              <button type="button" data-action="signout">Sign out</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="container">
+      <section class="dashboard">
+        <div class="dashboard-header">
+          <div>
+            <h1>Your boards</h1>
+            <p>Create storyboards with text, images, drawings, and audio timelines.</p>
+          </div>
+          <div class="create-board">
+            <input id="board-name" type="text" placeholder="New board name" />
+            <input id="board-color" type="color" value="#2f6bff" />
+            <button class="primary-button" type="button" id="create-board">
+              Create board
+            </button>
+          </div>
+        </div>
+        <p class="message hidden" id="dashboard-message"></p>
+        <div class="board-grid" id="board-list"></div>
+        <p class="empty hidden" id="board-empty">No boards yet. Create one to get started.</p>
+      </section>
+    </main>
+
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <script src="script.js"></script>
+  </body>
+</html>

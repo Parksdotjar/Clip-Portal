@@ -343,6 +343,26 @@ body.dark .site-header {
   justify-content: center;
 }
 
+.green-button {
+  background: #12c480;
+  color: #02140e;
+  border-radius: 999px;
+  padding: 10px 18px;
+  font-weight: 700;
+  gap: 8px;
+  box-shadow: 0 12px 24px rgba(18, 196, 128, 0.3);
+}
+
+.tag-new {
+  background: rgba(0, 0, 0, 0.2);
+  color: #02140e;
+  border-radius: 999px;
+  padding: 2px 8px;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
 .hidden {
   display: none;
 }

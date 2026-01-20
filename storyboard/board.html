@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Storyboard board</title>
+    <meta name="description" content="Storyboard editor." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body class="is-loading" data-page="storyboard-board">
+    <div class="loader" aria-live="polite">
+      <div class="loader-dot"></div>
+      <p>Loading board...</p>
+    </div>
+
+    <header class="site-header">
+      <div class="container header-inner">
+        <div class="brand">Storyboard</div>
+        <nav class="nav">
+          <a href="index.html">Boards</a>
+          <a href="info.html">Info</a>
+          <a href="../index.html">Clip Portal</a>
+        </nav>
+        <div class="header-actions">
+          <div class="user-menu hidden">
+            <button class="avatar-button" type="button" aria-haspopup="true" aria-expanded="false">
+              U
+            </button>
+            <div class="user-dropdown hidden">
+              <button type="button" data-action="signout">Sign out</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="board-shell">
+      <aside class="tool-rail">
+        <button class="tool-btn" data-tool="pan" aria-label="Pan">⠿</button>
+        <button class="tool-btn" data-tool="text" aria-label="Add text">T</button>
+        <button class="tool-btn" data-tool="link" aria-label="Add link">⛓</button>
+        <button class="tool-btn" data-tool="draw" aria-label="Draw">✎</button>
+        <button class="tool-btn" data-tool="erase" aria-label="Erase">⌫</button>
+        <button class="tool-btn" data-tool="image" aria-label="Add image">▣</button>
+      </aside>
+
+      <section class="board-area">
+        <div class="audio-panel">
+          <div class="audio-header">
+            <span id="audio-name">No audio loaded</span>
+            <label class="ghost-button link-button" for="audio-file">Import MP3</label>
+            <input id="audio-file" type="file" accept="audio/mp3,audio/mpeg" hidden />
+          </div>
+          <div class="audio-controls">
+            <button class="icon-button" id="audio-play" type="button">▶</button>
+            <div class="timeline">
+              <span id="current-time">0:00</span>
+              <input id="audio-seek" type="range" min="0" max="100" value="0" />
+              <span id="total-time">0:00</span>
+            </div>
+            <div class="volume">
+              <span>Vol</span>
+              <input id="audio-volume" type="range" min="0" max="1" step="0.01" value="0.6" />
+            </div>
+          </div>
+          <canvas id="waveform" height="80"></canvas>
+        </div>
+
+        <div class="board-viewport" id="board-viewport">
+          <div class="board-plane" id="board-plane">
+            <canvas id="draw-layer" width="2400" height="1600"></canvas>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <div class="floating-panel">
+      <label>Size</label>
+      <input id="brush-size" type="range" min="2" max="28" value="6" />
+      <label>Color</label>
+      <input id="brush-color" type="color" value="#f5f5f5" />
+    </div>
+
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <script src="script.js"></script>
+  </body>
+</html>

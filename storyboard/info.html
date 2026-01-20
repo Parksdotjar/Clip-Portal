@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Storyboard info</title>
+    <meta name="description" content="How storyboard boards work." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body class="is-loading" data-page="storyboard-info">
+    <div class="loader" aria-live="polite">
+      <div class="loader-dot"></div>
+      <p>Loading info...</p>
+    </div>
+
+    <header class="site-header">
+      <div class="container header-inner">
+        <div class="brand">Storyboard</div>
+        <nav class="nav">
+          <a href="index.html">Boards</a>
+          <a href="../index.html">Clip Portal</a>
+        </nav>
+        <div class="header-actions">
+          <a class="ghost-button link-button auth-link" href="../signin.html">Sign in</a>
+          <a class="ghost-button link-button auth-link" href="../signup.html">Sign up</a>
+          <div class="user-menu hidden">
+            <button class="avatar-button" type="button" aria-haspopup="true" aria-expanded="false">
+              U
+            </button>
+            <div class="user-dropdown hidden">
+              <button type="button" data-action="signout">Sign out</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="container">
+      <section class="info-card">
+        <h1>How it works</h1>
+        <p>
+          Each board belongs to your account. Add text, paste images, drop URLs,
+          sketch ideas, and attach one MP3 to drive the timeline.
+        </p>
+        <ul>
+          <li>Right-click and drag to pan the board.</li>
+          <li>Paste images directly from your clipboard.</li>
+          <li>Drag files onto the board to add them.</li>
+          <li>Use the waveform to scrub the audio.</li>
+        </ul>
+      </section>
+    </main>
+
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <script src="script.js"></script>
+  </body>
+</html>
