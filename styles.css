@@ -268,6 +268,56 @@ body.dark .site-header {
   justify-content: center;
 }
 
+.hidden {
+  display: none;
+}
+
+.user-menu {
+  position: relative;
+}
+
+.avatar-button {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  font-weight: 700;
+  font-family: "Space Grotesk", sans-serif;
+  cursor: pointer;
+}
+
+.user-dropdown {
+  position: absolute;
+  right: 0;
+  top: 44px;
+  background: #fff;
+  border-radius: 12px;
+  border: 1px solid rgba(11, 11, 12, 0.1);
+  box-shadow: var(--shadow);
+  display: grid;
+  min-width: 160px;
+  overflow: hidden;
+  z-index: 5;
+}
+
+.user-dropdown a,
+.user-dropdown button {
+  padding: 10px 14px;
+  border: none;
+  background: transparent;
+  text-align: left;
+  font-family: "Outfit", sans-serif;
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.user-dropdown a:hover,
+.user-dropdown button:hover {
+  background: rgba(11, 11, 12, 0.06);
+}
+
 .ghost-button {
   background: transparent;
   border: 1px solid rgba(11, 11, 12, 0.2);
@@ -343,6 +393,21 @@ h1 {
 
 .search-bar input::placeholder {
   color: var(--ink-soft);
+}
+
+.empty-state {
+  margin-top: 20px;
+  color: var(--ink-soft);
+}
+
+.form-message {
+  margin: 8px 0 0;
+  color: var(--accent);
+  font-size: 0.9rem;
+}
+
+.form-message.is-error {
+  color: #ff7a7a;
 }
 
 .playlist-player {
@@ -576,6 +641,11 @@ h1 {
 .clip-info p {
   color: var(--ink-soft);
   margin: 6px 0 0;
+}
+
+.clip-media {
+  width: 100%;
+  display: block;
 }
 
 .split {
@@ -814,6 +884,21 @@ body.dark .search-bar input {
 
 body.dark .search-bar input::placeholder {
   color: var(--ink-soft);
+}
+
+body.dark .user-dropdown {
+  background: #121418;
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+body.dark .user-dropdown a,
+body.dark .user-dropdown button {
+  color: var(--ink);
+}
+
+body.dark .user-dropdown a:hover,
+body.dark .user-dropdown button:hover {
+  background: rgba(255, 255, 255, 0.08);
 }
 
 body.dark .playlist-player {

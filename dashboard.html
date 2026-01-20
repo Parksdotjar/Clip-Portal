@@ -3,8 +3,8 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>clip-portal sign up</title>
-    <meta name="description" content="Create a clip-portal account." />
+    <title>clip-portal dashboard</title>
+    <meta name="description" content="Manage your uploaded clips." />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -13,7 +13,7 @@
     />
     <link rel="stylesheet" href="styles.css" />
   </head>
-  <body class="is-loading dark" data-page="signup">
+  <body class="is-loading dark" data-page="dashboard">
     <div class="loader" aria-live="polite">
       <div class="loader-dot"></div>
       <p>Loading clip-portal</p>
@@ -25,6 +25,7 @@
         <div class="brand">clip-portal</div>
         <div class="header-actions">
           <a class="ghost-button link-button" href="index.html">Back</a>
+          <a class="ghost-button link-button" href="upload.html">Upload</a>
           <button
             class="theme-toggle"
             type="button"
@@ -50,30 +51,12 @@
       <section class="page">
         <div class="container">
           <div class="page-header reveal">
-            <h1>Create account</h1>
-            <p>Build your personal clip library and start sharing today.</p>
+            <h1>Your clips</h1>
+            <p>Manage your uploads and remove clips anytime.</p>
           </div>
-          <div class="page-card reveal">
-            <form id="signup-form">
-              <div class="form-field">
-                <label for="signup-name">Display name</label>
-                <input id="signup-name" type="text" placeholder="ClipCurator" />
-              </div>
-              <div class="form-field">
-                <label for="signup-email">Email</label>
-                <input id="signup-email" type="email" placeholder="you@studio.com" />
-              </div>
-              <div class="form-field">
-                <label for="signup-password">Password</label>
-                <input id="signup-password" type="password" placeholder="Create a password" />
-              </div>
-              <p class="form-message hidden" id="signup-message"></p>
-              <div class="form-actions">
-                <button class="primary-button" type="submit">Sign up</button>
-                <a class="ghost-button link-button" href="signin.html">Already have an account</a>
-              </div>
-            </form>
-          </div>
+          <p class="form-message hidden" id="dashboard-message"></p>
+          <div class="clip-grid" data-dashboard-list></div>
+          <p class="empty-state hidden" data-dashboard-empty>No uploads yet.</p>
         </div>
       </section>
     </main>
@@ -82,7 +65,7 @@
       <div class="container footer-inner">
         <div>
           <div class="brand">clip-portal</div>
-          <p>Start curating in minutes.</p>
+          <p>Your personal clip archive.</p>
         </div>
         <div class="footer-links">
           <a href="index.html">Library</a>
@@ -109,9 +92,9 @@
           <button class="player-btn" type="button" data-action="next">Next</button>
         </div>
         <div class="player-volume">
-          <label for="volume-signup">Volume</label>
+          <label for="volume-dashboard">Volume</label>
           <input
-            id="volume-signup"
+            id="volume-dashboard"
             class="volume-slider"
             type="range"
             min="0"

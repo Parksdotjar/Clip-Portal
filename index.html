@@ -16,7 +16,7 @@
     />
     <link rel="stylesheet" href="styles.css" />
   </head>
-  <body class="is-loading dark">
+  <body class="is-loading dark" data-page="home">
     <div class="loader" aria-live="polite">
       <div class="loader-dot"></div>
       <p>Loading clip-portal</p>
@@ -37,8 +37,8 @@
         <div class="header-actions">
           <a class="ghost-button link-button" href="info.html">Info</a>
           <a class="ghost-button link-button" href="upload.html">Upload</a>
-          <a class="ghost-button link-button" href="signin.html">Sign in</a>
-          <a class="ghost-button link-button" href="signup.html">Sign up</a>
+          <a class="ghost-button link-button auth-link" href="signin.html">Sign in</a>
+          <a class="ghost-button link-button auth-link" href="signup.html">Sign up</a>
           <button
             class="theme-toggle"
             type="button"
@@ -47,6 +47,15 @@
           >
             <span class="toggle-dot"></span>
           </button>
+          <div class="user-menu hidden">
+            <button class="avatar-button" type="button" aria-haspopup="true" aria-expanded="false">
+              U
+            </button>
+            <div class="user-dropdown hidden">
+              <a href="dashboard.html">Dashboard</a>
+              <button type="button" data-action="signout">Sign out</button>
+            </div>
+          </div>
         </div>
       </div>
     </header>
@@ -62,7 +71,7 @@
             <input type="search" placeholder="Search by title, mood, or tag" />
             <button class="primary-button" type="button">Search</button>
           </div>
-          <div class="clip-grid">
+          <div class="clip-grid" data-clips-list>
             <article class="clip-card reveal" style="--delay: 0s">
               <div class="clip-cover cover-a"></div>
               <div class="clip-info">
@@ -106,6 +115,7 @@
               </div>
             </article>
           </div>
+          <p class="empty-state hidden" data-clips-empty>No clips yet. Upload the first one.</p>
         </div>
       </section>
     </main>
@@ -157,6 +167,7 @@
       <audio id="playlist-audio" preload="auto"></audio>
     </div>
 
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
     <script src="script.js"></script>
   </body>
 </html>
