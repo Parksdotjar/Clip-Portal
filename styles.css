@@ -139,6 +139,7 @@ main {
   z-index: 999;
   opacity: 0;
   transition: opacity 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
+  mix-blend-mode: difference;
 }
 
 body.cursor-hover .cursor-ring {
@@ -151,6 +152,7 @@ body.cursor-button .cursor-ring {
   width: 22px;
   height: 22px;
   border-radius: 6px;
+  border-color: #fff;
   transform: translate(-50%, -50%);
 }
 
@@ -159,7 +161,7 @@ body.cursor-text .cursor-ring {
   width: 30px;
   height: 30px;
   border-radius: 0;
-  border: 2px solid rgba(47, 107, 255, 0.8);
+  border: 2px solid #fff;
   background: transparent;
   clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
   transform: translate(-50%, -50%);
@@ -740,6 +742,7 @@ h1 {
 .clip-media {
   width: 100%;
   display: block;
+  cursor: none;
 }
 
 .clip-actions {

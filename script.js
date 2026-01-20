@@ -28,7 +28,7 @@ const setCursorPosition = (event) => {
 window.addEventListener("mousemove", setCursorPosition);
 window.addEventListener("touchmove", setCursorPosition, { passive: true });
 
-const clickableSelector = "button, a, [role='button']";
+const clickableSelector = "button, a, [role='button'], video";
 const textInputSelector = "input, textarea, select";
 
 const setCursorState = (event) => {
