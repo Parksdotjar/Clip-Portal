@@ -115,6 +115,26 @@ main {
   mix-blend-mode: difference;
 }
 
+.cursor-ring {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 2px solid rgba(47, 107, 255, 0.7);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 999;
+  opacity: 0;
+  transition: opacity 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
+}
+
+body.cursor-hover .cursor-ring {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1.1);
+}
+
 .ambient {
   position: fixed;
   inset: 0;
@@ -408,6 +428,33 @@ h1 {
 
 .form-message.is-error {
   color: #ff7a7a;
+}
+
+.upload-progress {
+  display: grid;
+  gap: 8px;
+}
+
+.progress-bar {
+  height: 6px;
+  background: rgba(11, 11, 12, 0.12);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.progress-bar span {
+  display: block;
+  height: 100%;
+  width: 0%;
+  background: var(--accent);
+  border-radius: 999px;
+  transition: width 0.2s ease;
+}
+
+.progress-text {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 0.85rem;
 }
 
 .playlist-player {
@@ -899,6 +946,14 @@ body.dark .user-dropdown button {
 body.dark .user-dropdown a:hover,
 body.dark .user-dropdown button:hover {
   background: rgba(255, 255, 255, 0.08);
+}
+
+body.dark .cursor-ring {
+  border-color: rgba(95, 141, 255, 0.7);
+}
+
+body.dark .progress-bar {
+  background: rgba(255, 255, 255, 0.12);
 }
 
 body.dark .playlist-player {

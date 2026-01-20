@@ -2,6 +2,7 @@ const revealItems = document.querySelectorAll(".reveal");
 const loader = document.querySelector(".loader");
 const body = document.body;
 const cursor = document.querySelector(".cursor-dot");
+const cursorRing = document.querySelector(".cursor-ring");
 const themeToggle = document.querySelector(".theme-toggle");
 const player = document.querySelector(".playlist-player");
 const supabaseUrl = "https://styegsfyqtjgiykiuztv.supabase.co";
@@ -18,10 +19,26 @@ const setCursorPosition = (event) => {
   const { clientX, clientY } = event;
   cursor.style.left = `${clientX}px`;
   cursor.style.top = `${clientY}px`;
+  if (cursorRing) {
+    cursorRing.style.left = `${clientX}px`;
+    cursorRing.style.top = `${clientY}px`;
+  }
 };
 
 window.addEventListener("mousemove", setCursorPosition);
 window.addEventListener("touchmove", setCursorPosition, { passive: true });
+
+const clickableSelector = "button, a, input, textarea, select, [role='button']";
+document.addEventListener("pointerover", (event) => {
+  if (event.target.closest(clickableSelector)) {
+    body.classList.add("cursor-hover");
+  }
+});
+document.addEventListener("pointerout", (event) => {
+  if (event.target.closest(clickableSelector)) {
+    body.classList.remove("cursor-hover");
+  }
+});
 
 const observer = new IntersectionObserver(
   (entries) => {
@@ -85,6 +102,22 @@ const fadeInAudio = (audioElement) => {
       }, 120);
     })
     .catch(() => {});
+};
+
+const setLoaderLabel = () => {
+  const loaderText = loader ? loader.querySelector("p") : null;
+  const pageType = body.dataset.page || "home";
+  const loaderLabels = {
+    home: "Loading clip-portal",
+    upload: "Loading uploader",
+    signin: "Loading sign in",
+    signup: "Loading sign up",
+    info: "Loading info",
+    dashboard: "Loading dashboard",
+  };
+  if (loaderText) {
+    loaderText.textContent = loaderLabels[pageType] || "Loading clip-portal";
+  }
 };
 
 const startExperience = (playlistReady) => {
@@ -318,6 +351,7 @@ const setupPlayer = async () => {
 };
 
 const playlistReady = setupPlayer();
+setLoaderLabel();
 setTimeout(() => startExperience(playlistReady), 2000);
 
 const authLinks = document.querySelectorAll(".auth-link");
@@ -434,6 +468,9 @@ const initUpload = async (session) => {
     return;
   }
   const message = document.getElementById("upload-message");
+  const progressWrap = document.getElementById("upload-progress");
+  const progressBar = progressWrap ? progressWrap.querySelector(".progress-bar span") : null;
+  const progressText = progressWrap ? progressWrap.querySelector(".progress-text") : null;
   const submitButton = form.querySelector('button[type="submit"]');
   if (!session) {
     showMessage(message, "You must sign in to upload a clip.", true);
@@ -449,6 +486,15 @@ const initUpload = async (session) => {
   form.addEventListener("submit", async (event) => {
     event.preventDefault();
     clearMessage(message);
+    if (progressWrap) {
+      progressWrap.classList.remove("hidden");
+    }
+    if (progressBar) {
+      progressBar.style.width = "0%";
+    }
+    if (progressText) {
+      progressText.textContent = "Uploading...";
+    }
     const title = document.getElementById("upload-title").value.trim();
     const fileInput = document.getElementById("upload-file");
     const tagsInput = document.getElementById("upload-tags").value.trim();
@@ -456,10 +502,16 @@ const initUpload = async (session) => {
     const file = fileInput?.files?.[0];
 
     if (!title) {
+      if (progressWrap) {
+        progressWrap.classList.add("hidden");
+      }
       showMessage(message, "Please add a clip title.", true);
       return;
     }
     if (!file) {
+      if (progressWrap) {
+        progressWrap.classList.add("hidden");
+      }
       showMessage(message, "Please select a video file.", true);
       return;
     }
@@ -469,19 +521,52 @@ const initUpload = async (session) => {
     const allowedExtensions = [".mp4", ".mov"];
     const hasValidExt = allowedExtensions.some((ext) => fileName.endsWith(ext));
     if (!allowedTypes.includes(file.type) || !hasValidExt) {
+      if (progressWrap) {
+        progressWrap.classList.add("hidden");
+      }
       showMessage(message, "Video must be .mp4 or .mov.", true);
       return;
     }
 
     const timestamp = Date.now();
     const storagePath = `${session.user.id}/${timestamp}-${file.name}`;
-    const { error: uploadError } = await supabaseClient.storage
-      .from("clips")
-      .upload(storagePath, file);
+    if (submitButton) {
+      submitButton.disabled = true;
+    }
+
+    let simulatedProgress = 0;
+    let progressTimer = null;
+    if (progressBar) {
+      progressTimer = setInterval(() => {
+        simulatedProgress = Math.min(90, simulatedProgress + Math.random() * 8);
+        progressBar.style.width = `${simulatedProgress.toFixed(0)}%`;
+      }, 300);
+    }
+
+    const { error: uploadError } = await supabaseClient.storage.from("clips").upload(storagePath, file);
 
     if (uploadError) {
+      if (progressTimer) {
+        clearInterval(progressTimer);
+      }
+      if (progressWrap) {
+        progressWrap.classList.add("hidden");
+      }
       showMessage(message, `Upload failed: ${uploadError.message}`, true);
+      if (submitButton) {
+        submitButton.disabled = false;
+      }
       return;
+    }
+
+    if (progressTimer) {
+      clearInterval(progressTimer);
+    }
+    if (progressBar) {
+      progressBar.style.width = "100%";
+    }
+    if (progressText) {
+      progressText.textContent = "Upload complete. Publishing...";
     }
 
     const { data: publicData } = supabaseClient.storage.from("clips").getPublicUrl(storagePath);
@@ -499,11 +584,23 @@ const initUpload = async (session) => {
     });
 
     if (insertError) {
+      if (progressWrap) {
+        progressWrap.classList.add("hidden");
+      }
       showMessage(message, `Failed to save clip: ${insertError.message}`, true);
+      if (submitButton) {
+        submitButton.disabled = false;
+      }
       return;
     }
 
     form.reset();
+    if (progressText) {
+      progressText.textContent = "Clip published.";
+    }
+    if (submitButton) {
+      submitButton.disabled = false;
+    }
     showMessage(message, "Clip published.");
   });
 };
