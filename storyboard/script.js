@@ -86,6 +86,35 @@ const initDashboard = async (session) => {
   }
   const empty = document.getElementById("board-empty");
   const message = document.getElementById("dashboard-message");
+  const createButton = document.getElementById("create-board");
+  const nameInput = document.getElementById("board-name");
+  const colorInput = document.getElementById("board-color");
+
+  if (createButton) {
+    createButton.addEventListener("click", async () => {
+      if (!session) {
+        showMessage(message, "Sign in to create boards.");
+        return;
+      }
+      const name = nameInput.value.trim();
+      if (!name) {
+        showMessage(message, "Name your board first.");
+        return;
+      }
+      clearMessage(message);
+      const { error: insertError } = await supabaseClient.from("boards").insert({
+        user_id: session.user.id,
+        name,
+        color: colorInput.value,
+      });
+      if (insertError) {
+        showMessage(message, insertError.message);
+        return;
+      }
+      nameInput.value = "";
+      window.location.reload();
+    });
+  }
   if (!session) {
     showMessage(message, "Sign in to view your boards.");
     return;
@@ -132,30 +161,6 @@ const initDashboard = async (session) => {
     list.appendChild(card);
   });
 
-  const createButton = document.getElementById("create-board");
-  if (createButton) {
-    createButton.addEventListener("click", async () => {
-      const nameInput = document.getElementById("board-name");
-      const colorInput = document.getElementById("board-color");
-      const name = nameInput.value.trim();
-      if (!name) {
-        showMessage(message, "Name your board first.");
-        return;
-      }
-      clearMessage(message);
-      const { error: insertError } = await supabaseClient.from("boards").insert({
-        user_id: session.user.id,
-        name,
-        color: colorInput.value,
-      });
-      if (insertError) {
-        showMessage(message, insertError.message);
-        return;
-      }
-      nameInput.value = "";
-      window.location.reload();
-    });
-  }
 };
 
 const initBoard = async (session) => {
