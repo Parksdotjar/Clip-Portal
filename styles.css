@@ -19,6 +19,14 @@
   box-sizing: border-box;
 }
 
+html {
+  background: radial-gradient(circle at top, #ffffff 0%, var(--sand) 45%, #e6e6e6 100%);
+}
+
+html.dark {
+  background: radial-gradient(circle at top, #1a1c20 0%, #0c0d10 55%, #090a0d 100%);
+}
+
 body {
   margin: 0;
   font-family: "Outfit", sans-serif;

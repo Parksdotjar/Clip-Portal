@@ -71,11 +71,13 @@ revealItems.forEach((item) => observer.observe(item));
 const setTheme = (mode) => {
   if (mode === "dark") {
     body.classList.add("dark");
+    document.documentElement.classList.add("dark");
     if (themeToggle) {
       themeToggle.setAttribute("aria-pressed", "true");
     }
   } else {
     body.classList.remove("dark");
+    document.documentElement.classList.remove("dark");
     if (themeToggle) {
       themeToggle.setAttribute("aria-pressed", "false");
     }
