@@ -18,6 +18,8 @@
       <div class="loader-dot"></div>
       <p>Loading board...</p>
     </div>
+    <div class="cursor-dot" aria-hidden="true"></div>
+    <div class="cursor-ring" aria-hidden="true"></div>
 
     <header class="site-header">
       <div class="container header-inner">
@@ -85,6 +87,24 @@
       <input id="brush-size" type="range" min="2" max="28" value="6" />
       <label>Color</label>
       <input id="brush-color" type="color" value="#f5f5f5" />
+    </div>
+
+    <div class="accent-picker">
+      <button class="accent-toggle" type="button" aria-expanded="false" aria-label="Accent settings">
+        ⚙
+      </button>
+      <div class="accent-panel">
+        <button class="accent-swatch" data-accent="#ff5fa2" style="--swatch:#ff5fa2"></button>
+        <button class="accent-swatch" data-accent="#ff7a3d" style="--swatch:#ff7a3d"></button>
+        <button class="accent-swatch" data-accent="#ffc857" style="--swatch:#ffc857"></button>
+        <button class="accent-swatch" data-accent="#12c480" style="--swatch:#12c480"></button>
+        <button class="accent-swatch" data-accent="#2f6bff" style="--swatch:#2f6bff"></button>
+        <button class="accent-swatch" data-accent="#5f8dff" style="--swatch:#5f8dff"></button>
+        <button class="accent-swatch" data-accent="#7c5cff" style="--swatch:#7c5cff"></button>
+        <button class="accent-swatch" data-accent="#b85cff" style="--swatch:#b85cff"></button>
+        <button class="accent-swatch" data-accent="#ff5fd8" style="--swatch:#ff5fd8"></button>
+        <button class="accent-swatch" data-accent="#36c2ff" style="--swatch:#36c2ff"></button>
+      </div>
     </div>
 
     <script src="https://unpkg.com/@supabase/supabase-js@2"></script>

@@ -1,10 +1,15 @@
-const revealItems = document.querySelectorAll(".reveal");
+const revealItems = document.querySelectorAll(
+  ".reveal, .clip-card, .page-card, .section, .library, .board-card, .drop-zone, .audio-panel, .board-viewport, .tool-rail, .floating-panel"
+);
 const loader = document.querySelector(".loader");
 const body = document.body;
 const cursor = document.querySelector(".cursor-dot");
 const cursorRing = document.querySelector(".cursor-ring");
 const themeToggle = document.querySelector(".theme-toggle");
 const player = document.querySelector(".playlist-player");
+const accentPicker = document.querySelector(".accent-picker");
+const accentToggle = accentPicker ? accentPicker.querySelector(".accent-toggle") : null;
+const accentSwatches = accentPicker ? accentPicker.querySelectorAll("[data-accent]") : [];
 const supabaseUrl = "https://styegsfyqtjgiykiuztv.supabase.co";
 const supabaseKey =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN0eWVnc2Z5cXRqZ2l5a2l1enR2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njg4NzIxODEsImV4cCI6MjA4NDQ0ODE4MX0.Or1BE7mVUNyoeI-CCax1DzvjNXCcScayVlh8ZQeAYYs";
@@ -28,36 +33,29 @@ const setCursorPosition = (event) => {
 window.addEventListener("mousemove", setCursorPosition);
 window.addEventListener("touchmove", setCursorPosition, { passive: true });
 
-const clickableSelector = "button, a, [role='button'], video";
-const textInputSelector = "input, textarea, select";
+const clickableSelector = "button, a, input, textarea, select, [role='button'], video";
 
-const setCursorState = (event) => {
-  const target = event.target;
-  if (target.closest(textInputSelector)) {
-    body.classList.add("cursor-text");
-    body.classList.remove("cursor-button");
-    body.classList.remove("cursor-hover");
-    return;
+document.addEventListener("pointerover", (event) => {
+  if (event.target.closest(clickableSelector)) {
+    body.classList.add("cursor-hover");
   }
-  if (target.closest(clickableSelector)) {
-    body.classList.add("cursor-button");
-    body.classList.remove("cursor-text");
+});
+document.addEventListener("pointerout", (event) => {
+  if (event.target.closest(clickableSelector)) {
     body.classList.remove("cursor-hover");
-    return;
   }
-  body.classList.remove("cursor-text");
-  body.classList.remove("cursor-button");
-  body.classList.remove("cursor-hover");
-};
-
-document.addEventListener("pointerover", setCursorState);
-document.addEventListener("pointermove", setCursorState);
-document.addEventListener("pointerout", setCursorState);
+});
 
 const observer = new IntersectionObserver(
   (entries) => {
     entries.forEach((entry) => {
       if (entry.isIntersecting) {
+        const rect = entry.boundingClientRect;
+        const delay = Math.min(
+          0.6,
+          Math.max(0, (rect.left / window.innerWidth + rect.top / window.innerHeight) * 0.5)
+        );
+        entry.target.style.setProperty("--delay", `${delay}s`);
         entry.target.classList.add("is-visible");
         observer.unobserve(entry.target);
       }
@@ -83,6 +81,41 @@ const setTheme = (mode) => {
     }
   }
 };
+
+const applyAccent = (hex) => {
+  const rgb = hex
+    .replace("#", "")
+    .match(/.{1,2}/g)
+    .map((channel) => parseInt(channel, 16));
+  const soft = `rgba(${rgb[0]}, ${rgb[1]}, ${rgb[2]}, 0.2)`;
+  const glow = `rgba(${rgb[0]}, ${rgb[1]}, ${rgb[2]}, 0.35)`;
+  document.documentElement.style.setProperty("--accent", hex);
+  document.documentElement.style.setProperty("--accent-soft", soft);
+  document.documentElement.style.setProperty("--accent-glow", glow);
+};
+
+const storedAccent = localStorage.getItem("clip-portal-accent");
+if (storedAccent) {
+  applyAccent(storedAccent);
+}
+
+if (accentPicker && accentToggle) {
+  const openPicker = (open) => {
+    accentPicker.classList.toggle("is-open", open);
+    accentToggle.setAttribute("aria-expanded", String(open));
+  };
+
+  accentPicker.addEventListener("mouseenter", () => openPicker(true));
+  accentPicker.addEventListener("mouseleave", () => openPicker(false));
+
+  accentSwatches.forEach((swatch) => {
+    swatch.addEventListener("click", () => {
+      const hex = swatch.dataset.accent;
+      applyAccent(hex);
+      localStorage.setItem("clip-portal-accent", hex);
+    });
+  });
+}
 
 const storedTheme = localStorage.getItem("clip-portal-theme");
 if (storedTheme) {

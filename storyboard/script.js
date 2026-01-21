@@ -6,6 +6,98 @@ const supabaseClient = window.supabase
   : null;
 
 const loader = document.querySelector(".loader");
+const cursor = document.querySelector(".cursor-dot");
+const cursorRing = document.querySelector(".cursor-ring");
+const accentPicker = document.querySelector(".accent-picker");
+const accentToggle = accentPicker ? accentPicker.querySelector(".accent-toggle") : null;
+const accentSwatches = accentPicker ? accentPicker.querySelectorAll("[data-accent]") : [];
+
+const setCursorPosition = (event) => {
+  if (!cursor) {
+    return;
+  }
+  const { clientX, clientY } = event;
+  cursor.style.left = `${clientX}px`;
+  cursor.style.top = `${clientY}px`;
+  if (cursorRing) {
+    cursorRing.style.left = `${clientX}px`;
+    cursorRing.style.top = `${clientY}px`;
+  }
+};
+
+window.addEventListener("mousemove", setCursorPosition);
+window.addEventListener("touchmove", setCursorPosition, { passive: true });
+
+const clickableSelector = "button, a, input, textarea, select, [role='button'], canvas, .note, .image-item";
+document.addEventListener("pointerover", (event) => {
+  if (event.target.closest(clickableSelector)) {
+    document.body.classList.add("cursor-hover");
+  }
+});
+document.addEventListener("pointerout", (event) => {
+  if (event.target.closest(clickableSelector)) {
+    document.body.classList.remove("cursor-hover");
+  }
+});
+
+const applyAccent = (hex) => {
+  const rgb = hex
+    .replace("#", "")
+    .match(/.{1,2}/g)
+    .map((channel) => parseInt(channel, 16));
+  const soft = `rgba(${rgb[0]}, ${rgb[1]}, ${rgb[2]}, 0.2)`;
+  const glow = `rgba(${rgb[0]}, ${rgb[1]}, ${rgb[2]}, 0.35)`;
+  document.documentElement.style.setProperty("--accent", hex);
+  document.documentElement.style.setProperty("--accent-soft", soft);
+  document.documentElement.style.setProperty("--accent-glow", glow);
+};
+
+const storedAccent = localStorage.getItem("clip-portal-accent");
+if (storedAccent) {
+  applyAccent(storedAccent);
+}
+
+const revealItems = document.querySelectorAll(
+  ".reveal, .board-card, .audio-panel, .tool-rail, .board-viewport, .floating-panel, .info-card"
+);
+
+const revealObserver = new IntersectionObserver(
+  (entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        const rect = entry.boundingClientRect;
+        const delay = Math.min(
+          0.6,
+          Math.max(0, (rect.left / window.innerWidth + rect.top / window.innerHeight) * 0.5)
+        );
+        entry.target.style.setProperty("--delay", `${delay}s`);
+        entry.target.classList.add("is-visible");
+        revealObserver.unobserve(entry.target);
+      }
+    });
+  },
+  { threshold: 0.2 }
+);
+
+revealItems.forEach((item) => revealObserver.observe(item));
+
+if (accentPicker && accentToggle) {
+  const openPicker = (open) => {
+    accentPicker.classList.toggle("is-open", open);
+    accentToggle.setAttribute("aria-expanded", String(open));
+  };
+
+  accentPicker.addEventListener("mouseenter", () => openPicker(true));
+  accentPicker.addEventListener("mouseleave", () => openPicker(false));
+
+  accentSwatches.forEach((swatch) => {
+    swatch.addEventListener("click", () => {
+      const hex = swatch.dataset.accent;
+      applyAccent(hex);
+      localStorage.setItem("clip-portal-accent", hex);
+    });
+  });
+}
 
 const startExperience = () => {
   if (!loader) {
